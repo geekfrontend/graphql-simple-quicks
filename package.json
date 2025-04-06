@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Simple GraphQL server using Apollo Server with Express and TypeScript",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "nodemon src/index.ts",
     "build": "rimraf dist && tsc",
