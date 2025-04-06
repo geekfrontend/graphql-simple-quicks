@@ -1,17 +1,31 @@
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { createServer } from "http";
 import express from "express";
-import type { Request, Response } from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { typeDefs, resolvers } from "./schema";
 
 const app = express();
-const PORT = 3000;
+const httpServer = createServer(app);
 
-app.use(express.json());
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("GraphQL server Simple Quicks");
+const server = new ApolloServer({
+  schema,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+async function start() {
+  await server.start();
 
-export default app;
+  app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(server));
+
+  httpServer.listen(4000, () => {
+    console.log("🚀 Server graphql ready");
+  });
+}
+
+start();
