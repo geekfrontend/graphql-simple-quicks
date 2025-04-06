@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon src/index.ts",
-    "build": "rimraf dist && tsc && cpx \"src/public/**/*\" dist/public",
+    "build": "rimraf dist && tsc",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -30,6 +30,7 @@
     "@types/node": "^20.11.25",
     "@types/ws": "^8.5.10",
     "nodemon": "^2.0.22",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^4.5.2"
   }
