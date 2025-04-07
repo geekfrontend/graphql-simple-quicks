@@ -6,7 +6,8 @@ import { createServer } from "http";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { typeDefs, resolvers } from "./schema";
+import { typeDefs, resolvers } from "./graphql/schema";
+import tasksRouer from "./routes/tasks";
 
 const app = express();
 const httpServer = createServer(app);
@@ -22,6 +23,7 @@ async function start() {
   await server.start();
 
   app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(server));
+  app.use("/api/tasks", tasksRouer);
 
   httpServer.listen(4000, () => {
     console.log("🚀 Server graphql ready");
